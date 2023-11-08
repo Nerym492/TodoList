@@ -20,28 +20,29 @@
         "ext-iconv": "*",
         "doctrine/annotations": "*",
         "doctrine/cache": "*",
-        "doctrine/doctrine-bundle": "2.0.*",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/doctrine-bundle": "*",
+        "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "*",
-        "sensio/framework-extra-bundle": "5.1.*",
-        "symfony/asset": "4.4.*",
-        "symfony/console": "4.4.*",
-        "symfony/dotenv": "4.4.*",
+        "sensio/framework-extra-bundle": "5.6.0",
+        "symfony/asset": "5.0.*",
+        "symfony/console": "*",
+        "symfony/dotenv": "5.0.*",
         "symfony/flex": "*",
-        "symfony/form": "4.4.*",
-        "symfony/framework-bundle": "4.4.*",
-        "symfony/security-bundle": "4.4.*",
-        "symfony/twig-bundle": "4.4.*",
-        "symfony/validator": "4.4.*",
+        "symfony/form": "5.0.*",
+        "symfony/framework-bundle": "*",
+        "symfony/monolog-bundle": "^3.8",
+        "symfony/security-bundle": "5.0.*",
+        "symfony/twig-bundle": "5.0.*",
+        "symfony/validator": "5.0.*",
         "symfony/webpack-encore-bundle": "^1.17",
-        "symfony/yaml": "4.4.*",
+        "symfony/yaml": "5.0.*",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.39",
         "symfony/phpunit-bridge": "^3.0",
-        "symfony/stopwatch": "4.4.*",
-        "symfony/web-profiler-bundle": "4.4.*"
+        "symfony/stopwatch": "5.0.*",
+        "symfony/web-profiler-bundle": "5.0.*"
     },
     "scripts": {
         "auto-scripts": {
@@ -61,7 +62,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.4.*"
+            "require": "5.0.*"
         }
     },
     "config": {
