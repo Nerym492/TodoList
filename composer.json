@@ -23,7 +23,6 @@
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "*",
-        "sensio/framework-extra-bundle": "5.6.0",
         "symfony/asset": "5.0.*",
         "symfony/console": "*",
         "symfony/dotenv": "5.0.*",
