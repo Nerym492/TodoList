@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
@@ -26,7 +28,7 @@ class TaskController extends AbstractController
         return $this->render(
             'task/list.html.twig',
             [
-                'tasks' => $this->entityManager->getRepository(Task::class)->findAll()
+                'tasks' => $this->entityManager->getRepository(Task::class)->findAll(),
             ]
         );
     }
@@ -34,14 +36,21 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/create", name="task_create")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, Security $security, UserRepository $userRepository)
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $loggedUser = $security->getUser();
+            if ($loggedUser) {
+                $username = $loggedUser->getUserIdentifier();
+                $user = $userRepository->findOneBy(['username' => $username]);
+                $task->setUser($user);
+            }
+
             $this->entityManager->persist($task);
             $this->entityManager->flush();
 
