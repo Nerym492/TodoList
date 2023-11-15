@@ -38,3 +38,5 @@ security:
         - { route: 'task_list', roles: PUBLIC_ACCESS }
         - { route: 'homepage', roles: ROLE_USER }
         - { path: '^/users', roles: ROLE_ADMIN }
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
