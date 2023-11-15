@@ -25,6 +25,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: "Vous devez saisir un nom d'utilisateur.")]
     private ?string $username;
 
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
     #[ORM\Column(length: 64)]
     private ?string $password;
 
@@ -83,7 +86,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return array('ROLE_USER');
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(string $role): void
+    {
+        $this->roles = [$role];
     }
 
     public function getUserIdentifier(): string

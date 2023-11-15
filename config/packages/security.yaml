@@ -34,7 +34,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { route: 'login', roles: PUBLIC_ACCESS }
-        - { route: 'user_list', roles: PUBLIC_ACCESS }
         - { route: 'task_create', roles: PUBLIC_ACCESS }
         - { route: 'task_list', roles: PUBLIC_ACCESS }
         - { route: 'homepage', roles: ROLE_USER }
+        - { path: '^/users', roles: ROLE_ADMIN }
