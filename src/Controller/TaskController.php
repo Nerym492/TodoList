@@ -13,11 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private Security $security
+    ) {
     }
 
     /**
@@ -25,10 +24,35 @@ class TaskController extends AbstractController
      */
     public function listAction()
     {
+        $tasks = $this->entityManager->getRepository(Task::class)->findAll();
+        $tasksInfos = [];
+
+        foreach ($tasks as $task) {
+            $taskId = $task->getId();
+            $tasksInfos[$taskId]['allowDelete'] = false;
+            $taskCreator = $task->getUser();
+            $loggedUser = $this->security->getUser();
+            $tasksInfos[$taskId]['isTaskCreator'] = false;
+
+            if ($taskCreator && $loggedUser) {
+                // True if the logged-in user is the creator of this task
+                $tasksInfos[$taskId]['isTaskCreator'] = $taskCreator->getUsername() === $loggedUser->getUserIdentifier();
+            }
+
+            /* The task creator is anonymous and the logged-in user is an admin
+             * OR the task belong to the logged-in user */
+            if ($this->security->isGranted('ROLE_ADMIN') && !$taskCreator
+                || $tasksInfos[$taskId]['isTaskCreator']
+            ) {
+                $tasksInfos[$taskId]['allowDelete'] = true;
+            }
+        }
+
         return $this->render(
             'task/list.html.twig',
             [
-                'tasks' => $this->entityManager->getRepository(Task::class)->findAll(),
+                'tasks' => $tasks,
+                'tasksInfos' => $tasksInfos,
             ]
         );
     }
@@ -36,7 +60,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/create", name="task_create")
      */
-    public function createAction(Request $request, Security $security, UserRepository $userRepository)
+    public function createAction(Request $request, UserRepository $userRepository)
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -44,7 +68,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $loggedUser = $security->getUser();
+            $loggedUser = $this->security->getUser();
             if ($loggedUser) {
                 $username = $loggedUser->getUserIdentifier();
                 $user = $userRepository->findOneBy(['username' => $username]);
@@ -103,6 +127,25 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
+        $taskUser = $task->getUser();
+        $connectedUser = $this->security->getUser();
+        $allowDelete = false;
+
+        if ($connectedUser) {
+            // Only the administrator can delete an anonymous task
+            $allowDelete = !$taskUser && 'ROLE_ADMIN' === implode(',', $connectedUser->getRoles());
+        }
+
+        if ($taskUser && $connectedUser) {
+            // Only the user who created the task can delete it
+            $allowDelete = $taskUser->getUsername() === $connectedUser->getUserIdentifier();
+        }
+
+        if (!$allowDelete) {
+            $this->addFlash('error', "Vous n'êtes pas autorisé à supprimer cette tâche.");
+            return $this->redirectToRoute('task_list');
+        }
+
         $this->entityManager->remove($task);
         $this->entityManager->flush();
 
