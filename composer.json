@@ -28,6 +28,7 @@
         "symfony/form": "6.3.*",
         "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.8",
+        "symfony/runtime": "6.3.*",
         "symfony/security-bundle": "6.3.*",
         "symfony/twig-bundle": "6.3.*",
         "symfony/validator": "6.3.*",
@@ -69,7 +70,8 @@
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         },
         "preferred-install": {
             "*": "dist"
