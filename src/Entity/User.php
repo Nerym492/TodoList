@@ -39,8 +39,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class)]
     private Collection $tasks;
 
-    public function __construct()
+    public function __construct(string $username = null, string $roles = '', string $password = null, string $email = null)
     {
+        $this->setUsername($username);
+        $this->setRoles($roles);
+        $this->setPassword($password);
+        $this->setEmail($email);
         $this->tasks = new ArrayCollection();
     }
 
@@ -57,11 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername($username)
     {
         $this->username = $username;
-    }
-
-    public function getSalt()
-    {
-        return null;
     }
 
     public function getPassword(): string
@@ -106,6 +105,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function eraseCredentials(): void
     {
     }

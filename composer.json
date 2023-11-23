@@ -28,6 +28,7 @@
         "symfony/form": "6.3.*",
         "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.8",
+        "symfony/runtime": "6.3.*",
         "symfony/security-bundle": "6.3.*",
         "symfony/twig-bundle": "6.3.*",
         "symfony/validator": "6.3.*",
@@ -36,9 +37,14 @@
         "twig/twig": "*"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^7.2",
+        "doctrine/doctrine-fixtures-bundle": "^3.5",
         "friendsofphp/php-cs-fixer": "^3.38",
+        "phpunit/phpunit": "^10.4",
+        "symfony/browser-kit": "6.3.*",
+        "symfony/css-selector": "6.3.*",
         "symfony/maker-bundle": "^1.39",
-        "symfony/phpunit-bridge": "^3.0",
+        "symfony/phpunit-bridge": "^6.3",
         "symfony/stopwatch": "6.3.*",
         "symfony/web-profiler-bundle": "6.3.*"
     },
@@ -66,7 +72,8 @@
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         },
         "preferred-install": {
             "*": "dist"
