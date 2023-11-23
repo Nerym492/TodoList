@@ -33,10 +33,13 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?User $user = null;
 
-    public function __construct()
+    public function __construct(\DateTime $createdAt = new \DateTime(), string $title = null, string $content = null,
+        bool $isDone = false)
     {
-        $this->createdAt = new \Datetime();
-        $this->isDone = false;
+        $this->setCreatedAt($createdAt);
+        $this->setTitle($title);
+        $this->setContent($content);
+        $this->toggle($isDone);
     }
 
     public function getId()
@@ -92,18 +95,6 @@ class Task
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function isIsDone(): ?bool
-    {
-        return $this->isDone;
-    }
-
-    public function setIsDone(bool $isDone): static
-    {
-        $this->isDone = $isDone;
 
         return $this;
     }
