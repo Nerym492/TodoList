@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class UserFixture extends Fixture
+class UserFixtures extends Fixture
 {
     public function __construct(
         private EntityManagerInterface $entityManager
@@ -16,13 +16,13 @@ class UserFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $this->createUserObject(
+        $this->persistUserObject(
             role: 'ROLE_USER',
             email: 'testuser@gmail.com',
             username: 'Test1234',
             password: password_hash('Test1234*', PASSWORD_BCRYPT)
         );
-        $this->createUserObject(
+        $this->persistUserObject(
             role: 'ROLE_ADMIN',
             email: 'adminuser@gmail.com',
             username: 'Admin1234',
@@ -32,7 +32,7 @@ class UserFixture extends Fixture
         $manager->flush();
     }
 
-    private function createUserObject(string $role = '', string $email = null, string $username = null,
+    private function persistUserObject(string $role = '', string $email = null, string $username = null,
         string $password = null): void
     {
         $user = new User();
