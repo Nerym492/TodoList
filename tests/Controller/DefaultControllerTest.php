@@ -12,7 +12,7 @@ class DefaultControllerTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->client = static::createClient([], ['environment' => 'test']);
+        $this->client = static::createClient();
         $this->client->followRedirects();
     }
 
@@ -27,11 +27,8 @@ class DefaultControllerTest extends WebTestCase
 
     public function testHomepageWhenUserIsAuthenticated(): void
     {
-        $user = $this->client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(
-            [
-                'username' => 'Test1234',
-            ]
-        );
+        $entityManager = $this->client->getContainer()->get('doctrine');
+        $user = $entityManager->getRepository(User::class)->findOneBy(['username' => 'Test1234']);
 
         $this->client->loginUser($user);
         $this->client->request('GET', '/');

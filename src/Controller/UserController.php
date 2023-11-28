@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    private $entityManager;
-    private $userPasswordHasher;
+    private EntityManagerInterface $entityManager;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
     {
