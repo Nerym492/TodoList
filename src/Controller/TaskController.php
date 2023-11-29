@@ -29,14 +29,15 @@ class TaskController extends AbstractController
 
         foreach ($tasks as $task) {
             $taskId = $task->getId();
+            $tasksInfos[$taskId]['taskCreator'] = 'Anonyme';
             $tasksInfos[$taskId]['allowDelete'] = false;
             $taskCreator = $task->getUser();
             $loggedUser = $this->security->getUser();
             $tasksInfos[$taskId]['isTaskCreator'] = false;
 
-            if ($taskCreator && $loggedUser) {
-                // True if the logged-in user is the creator of this task
-                $tasksInfos[$taskId]['isTaskCreator'] = $taskCreator->getUsername() === $loggedUser->getUserIdentifier();
+            // Checks if the logged-in user is the creator of this task
+            if ($taskCreator && $loggedUser && $taskCreator->getUsername() === $loggedUser->getUserIdentifier()) {
+                $tasksInfos[$taskId]['isTaskCreator'] = true;
             }
 
             /* The task creator is anonymous and the logged-in user is an admin
@@ -143,6 +144,7 @@ class TaskController extends AbstractController
 
         if (!$allowDelete) {
             $this->addFlash('error', "Vous n'êtes pas autorisé à supprimer cette tâche.");
+
             return $this->redirectToRoute('task_list');
         }
 
