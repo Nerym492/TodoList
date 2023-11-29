@@ -22,13 +22,9 @@
 
                     <p class="small">
                         Créé par
-                        {% if tasksInfos[task.id].isTaskCreator %}
-                            Moi
-                        {% elseif task.user %}
+                        {% if task.user %}
                             {{ task.user.username }}
-                        {% endif %}
-
-                        {% if not task.user %}
+                        {% else %}
                             Anonyme
                         {% endif %}
                     </p>
