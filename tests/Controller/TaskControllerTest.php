@@ -26,4 +26,20 @@ class TaskControllerTest extends WebTestCase
         $this->client->request('GET', '/tasks');
         self::assertResponseStatusCodeSame(200);
     }
+
+    public function testTaskDeleteButtonVisibleIfUserIsTaskCreator(): void
+    {
+        $this->client->loginUser($this->basicUser);
+        $crawler = $this->client->request('GET', '/tasks');
+
+        $crawler->filter('.task')->each(function ($node) {
+            $deleteBtnNode = $node->filter('.btn-danger');
+            if (1 === $deleteBtnNode->count()) {
+                self::assertTrue(
+                    $node->filter('.task-creator')->text() === 'Créé par '.$this->basicUser->getUsername(),
+                    'The user must not be able to see the delete button if he is not the task creator.'
+                );
+            }
+        });
+    }
 }
