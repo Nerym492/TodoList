@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class TaskControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
+    private ?object $entityManager;
     private User $adminUser;
     private User $basicUser;
 
@@ -16,9 +17,9 @@ class TaskControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $this->client->followRedirects();
-        $entityManager = $this->client->getContainer()->get('doctrine');
-        $this->adminUser = $entityManager->getRepository(User::class)->findOneBy(['username' => 'Admin1234']);
-        $this->basicUser = $entityManager->getRepository(User::class)->findOneBy(['username' => 'Test1234']);
+        $this->entityManager = $this->client->getContainer()->get('doctrine');
+        $this->adminUser = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'Admin1234']);
+        $this->basicUser = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'Test1234']);
     }
 
     public function testTaskPageIsUp(): void
