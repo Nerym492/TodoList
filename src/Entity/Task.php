@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\TaskRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ORM\Table(name: 'task')]
+#[UniqueEntity(fields: ['title'], message: 'Une tâche portant ce nom existe déjà.')]
 class Task
 {
     #[ORM\Id]
