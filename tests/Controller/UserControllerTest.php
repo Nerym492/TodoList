@@ -41,34 +41,34 @@ class UserControllerTest extends WebTestCase
     public function testAdminCanCreateUser(): void
     {
         $this->checkUserFormSubmission(
-            '/users/create',
-            'Ajouter',
-            [
+            uri: '/users/create',
+            buttonValue: 'Ajouter',
+            userFormValues: [
                 'username' => 'newUser456',
                 'firstPassword' => 'password',
                 'secondPassword' => 'password',
                 'email' => 'newUser456@test.com',
                 'role' => 'ROLE_USER',
             ],
-            'Admin must be able to create a new user',
-            "L'utilisateur a bien été ajouté."
+            errorMessage: 'Admin must be able to create a new user',
+            flashMessage: "L'utilisateur a bien été ajouté."
         );
     }
 
     public function testAdminCanEditUser(): void
     {
         $this->checkUserFormSubmission(
-            '/users/'.$this->basicUser->getId().'/edit',
-            'Modifier',
-            [
+            uri: '/users/'.$this->basicUser->getId().'/edit',
+            buttonValue: 'Modifier',
+            userFormValues: [
                 'username' => 'modifiedUser456',
                 'firstPassword' => 'modifiedPassword',
                 'secondPassword' => 'modifiedPassword',
                 'email' => 'modifiedUser456@test.com',
                 'role' => 'ROLE_ADMIN',
             ],
-            'Admin must be able to modify a user',
-            "L'utilisateur a bien été modifié"
+            errorMessage: 'Admin must be able to modify a user',
+            flashMessage: "L'utilisateur a bien été modifié"
         );
     }
 
@@ -88,7 +88,7 @@ class UserControllerTest extends WebTestCase
     }
 
     private function checkUserFormSubmission(string $uri, string $buttonValue, array $userFormValues, string $errorMessage,
-        string $successMessage): void
+        string $flashMessage): void
     {
         $this->client->loginUser($this->adminUser);
 
@@ -106,6 +106,6 @@ class UserControllerTest extends WebTestCase
             '/users' === parse_url($this->client->getCrawler()->getUri(), PHP_URL_PATH),
             $errorMessage
         );
-        self::assertSelectorTextContains('body', $successMessage);
+        self::assertSelectorTextContains('body', $flashMessage);
     }
 }
