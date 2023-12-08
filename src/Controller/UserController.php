@@ -14,13 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private UserPasswordHasherInterface $userPasswordHasher;
-
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
-    {
-        $this->entityManager = $entityManager;
-        $this->userPasswordHasher = $userPasswordHasher;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $userPasswordHasher
+    ) {
     }
 
     #[Route(path: '/users', name: 'user_list', methods: ['GET'])]

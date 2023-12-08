@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private Security $security
+        private readonly EntityManagerInterface $entityManager,
+        private readonly Security $security
     ) {
     }
 
