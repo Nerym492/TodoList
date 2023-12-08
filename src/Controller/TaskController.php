@@ -117,7 +117,7 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_list');
     }
 
-    #[Route(path: '/tasks/{id}/delete', name: 'task_delete', methods: ['GET'])]
+    #[Route(path: '/tasks/{id}/delete', name: 'task_delete', methods: ['DELETE'])]
     public function deleteTaskAction(Task $task): RedirectResponse
     {
         $taskUser = $task->getUser();
