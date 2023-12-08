@@ -106,7 +106,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/tasks/{id}/toggle', name: 'task_toggle', methods: ['GET'])]
+    #[Route(path: '/tasks/{id}/toggle', name: 'task_toggle', methods: ['PUT'])]
     public function toggleTaskAction(Task $task): RedirectResponse
     {
         $task->toggle(!$task->isDone());
