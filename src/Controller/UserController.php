@@ -6,33 +6,28 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    private UserPasswordHasherInterface $userPasswordHasher;
-
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
-    {
-        $this->entityManager = $entityManager;
-        $this->userPasswordHasher = $userPasswordHasher;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $userPasswordHasher
+    ) {
     }
 
-    /**
-     * @Route("/users", name="user_list")
-     */
-    public function listAction()
+    #[Route(path: '/users', name: 'user_list', methods: ['GET'])]
+    public function listAction(): Response
     {
         return $this->render('user/list.html.twig', ['users' => $this->entityManager->getRepository(User::class)->findAll()]);
     }
 
-    /**
-     * @Route("/users/create", name="user_create")
-     */
-    public function createAction(Request $request)
+    #[Route(path: '/users/create', name: 'user_create', methods: ['GET', 'POST'])]
+    public function createAction(Request $request): RedirectResponse|Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -56,10 +51,8 @@ class UserController extends AbstractController
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/users/{id}/edit", name="user_edit")
-     */
-    public function editAction(User $user, Request $request)
+    #[Route(path: '/users/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
+    public function editAction(User $user, Request $request): RedirectResponse|Response
     {
         $form = $this->createForm(UserType::class, $user, ['roleValue' => $user->getRolesAsString()]);
 

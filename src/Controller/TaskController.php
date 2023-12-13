@@ -8,21 +8,21 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private Security $security
+        private readonly EntityManagerInterface $entityManager,
+        private readonly Security $security
     ) {
     }
 
-    /**
-     * @Route("/tasks", name="task_list")
-     */
-    public function listAction()
+    #[Route(path: 'tasks', name: 'task_list', methods: ['GET'])]
+    public function listAction(): Response
     {
         $tasks = $this->entityManager->getRepository(Task::class)->findAll();
         $tasksInfos = [];
@@ -58,10 +58,8 @@ class TaskController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/tasks/create", name="task_create")
-     */
-    public function createAction(Request $request, UserRepository $userRepository)
+    #[Route(path: '/tasks/create', name: 'task_create', methods: ['GET', 'POST'])]
+    public function createAction(Request $request, UserRepository $userRepository): RedirectResponse|Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -87,10 +85,8 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/tasks/{id}/edit", name="task_edit")
-     */
-    public function editAction(Task $task, Request $request)
+    #[Route(path: '/tasks/{id}/edit', name: 'task_edit', methods: ['GET', 'POST'])]
+    public function editAction(Task $task, Request $request): RedirectResponse|Response
     {
         $form = $this->createForm(TaskType::class, $task);
 
@@ -110,10 +106,8 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tasks/{id}/toggle", name="task_toggle")
-     */
-    public function toggleTaskAction(Task $task)
+    #[Route(path: '/tasks/{id}/toggle', name: 'task_toggle', methods: ['PUT'])]
+    public function toggleTaskAction(Task $task): RedirectResponse
     {
         $task->toggle(!$task->isDone());
         $this->entityManager->flush();
@@ -123,10 +117,8 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_list');
     }
 
-    /**
-     * @Route("/tasks/{id}/delete", name="task_delete")
-     */
-    public function deleteTaskAction(Task $task)
+    #[Route(path: '/tasks/{id}/delete', name: 'task_delete', methods: ['DELETE'])]
+    public function deleteTaskAction(Task $task): RedirectResponse
     {
         $taskUser = $task->getUser();
         $connectedUser = $this->security->getUser();

@@ -386,7 +386,7 @@ rules:
   web.missing_robots_txt:
     enabled: true
   web.missing_web_manifest:
-    enabled: true
+    enabled: false
   web.non_utf8_encoding:
     enabled: true
   xml.syntax_error:

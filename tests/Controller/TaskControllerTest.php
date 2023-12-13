@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class TaskControllerTest extends WebTestCase
 {
@@ -34,7 +35,7 @@ class TaskControllerTest extends WebTestCase
         $this->client->loginUser($this->basicUser);
         $crawler = $this->client->request('GET', '/tasks');
 
-        $crawler->filter('.task')->each(function ($node) {
+        $crawler->filter('.task')->each(function (Crawler $node) {
             $deleteBtnNode = $node->filter('.btn-danger');
             if (1 === $deleteBtnNode->count()) {
                 self::assertTrue(
