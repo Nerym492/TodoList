@@ -83,7 +83,7 @@ class TaskControllerTest extends WebTestCase
     {
         $task = $this->entityManager->getRepository(Task::class)->findOneBy(['title' => 'Another Task']);
 
-        $this->client->request('GET', 'tasks/'.$task->getId().'/delete');
+        $this->client->request('DELETE', 'tasks/'.$task->getId().'/delete');
 
         self::assertTrue(
             '/tasks' === parse_url($this->client->getCrawler()->getUri(), PHP_URL_PATH),
@@ -137,7 +137,7 @@ class TaskControllerTest extends WebTestCase
     {
         $task = $this->entityManager->getRepository(Task::class)->findOneBy(['title' => 'Test task']);
 
-        $this->client->request('GET', 'tasks/'.$task->getId().'/toggle');
+        $this->client->request('PUT', 'tasks/'.$task->getId().'/toggle');
 
         self::assertTrue(
             '/tasks' === parse_url($this->client->getCrawler()->getUri(), PHP_URL_PATH),
@@ -151,7 +151,7 @@ class TaskControllerTest extends WebTestCase
 
     private function checkTaskDeletion(Task $task, string $flashMessage): void
     {
-        $this->client->request('GET', '/tasks/'.$task->getId().'/delete');
+        $this->client->request('DELETE', '/tasks/'.$task->getId().'/delete');
         self::assertTrue(
             '/tasks' === parse_url($this->client->getCrawler()->getUri(), PHP_URL_PATH),
             'The user must be redirected to the task list'
