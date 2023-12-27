@@ -43,10 +43,6 @@
                     <a href="{{ path('user_list') }}" class="btn btn-info">Consulter la liste des utilisateurs</a>
                 {% endif %}
 
-                {% if 'login' == app.request.attributes.get('_route') %}
-                    <a href="{{ path('task_create') }}" class="btn btn-success">Créer une tâche</a>
-                {% endif %}
-
                 {% if app.user %}
                 <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
                 {% endif %}

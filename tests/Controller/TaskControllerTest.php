@@ -57,16 +57,6 @@ class TaskControllerTest extends WebTestCase
         );
     }
 
-    public function testAnonymousUserCanCreateTask(): void
-    {
-        $this->checkTaskFormSubmission(
-            uri: '/tasks/create',
-            buttonValue: 'Ajouter',
-            errorMessage: 'An anonymous user must be able to create a task',
-            flashMessage: 'La tâche a été bien été ajoutée.'
-        );
-    }
-
     public function testTaskCanBeModified(): void
     {
         $task = $this->entityManager->getRepository(Task::class)->findOneBy(['title' => 'Another Task']);
@@ -75,24 +65,8 @@ class TaskControllerTest extends WebTestCase
             uri: '/tasks/'.$task->getId().'/edit',
             buttonValue: 'Modifier',
             errorMessage: 'A task must be editable',
-            flashMessage: 'La tâche a bien été modifiée.'
-        );
-    }
-
-    public function testAnonymousUserCannotDeleteTask(): void
-    {
-        $task = $this->entityManager->getRepository(Task::class)->findOneBy(['title' => 'Another Task']);
-
-        $this->client->request('DELETE', 'tasks/'.$task->getId().'/delete');
-
-        self::assertTrue(
-            '/tasks' === parse_url($this->client->getCrawler()->getUri(), PHP_URL_PATH),
-            'The user must be redirected to the task list'
-        );
-        self::assertSelectorTextContains(
-            'body',
-            "Vous n'êtes pas autorisé à supprimer cette tâche.",
-            'An anonymous user must not be able to delete a task'
+            flashMessage: 'La tâche a bien été modifiée.',
+            user: $this->basicUser
         );
     }
 
@@ -135,6 +109,7 @@ class TaskControllerTest extends WebTestCase
 
     public function testTaskStatusCanBeChanged(): void
     {
+        $this->client->loginUser($this->basicUser);
         $task = $this->entityManager->getRepository(Task::class)->findOneBy(['title' => 'Test task']);
 
         $this->client->request('PUT', 'tasks/'.$task->getId().'/toggle');
