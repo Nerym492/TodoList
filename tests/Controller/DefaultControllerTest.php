@@ -16,7 +16,7 @@ class DefaultControllerTest extends WebTestCase
         $this->client->followRedirects();
     }
 
-    public function testRedirectionWhenUserIsNotAuthenticated(): void
+    public function testRedirectedToLoginIfNotAuthenticated(): void
     {
         $crawler = $this->client->request('GET', '/');
 
