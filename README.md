@@ -51,3 +51,20 @@ https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
     ```
 13. The application is now ready to use !
 
+## Default login credentials
+
+__Basic user__
+* username : Test1234
+* password : Test1234*
+
+__Admin user__
+* username : Admin1234
+* password : Admin1234*
+
+## Tests
+
+Run the tests with the following command :
+```sh
+php bin/phpunit --testdox
+```
+The --testdox option allows you to display a more easily readable result.
