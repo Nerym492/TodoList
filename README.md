@@ -65,6 +65,11 @@ __Admin user__
 
 Run the tests with the following command :
 ```sh
-php bin/phpunit --testdox
+php bin/phpunit --coverage-html tests/test-coverage --testdox
 ```
 The --testdox option allows you to display a more easily readable result.
+
+## Contribute
+
+To see how you can contribute, follow the instructions in the 
+[CONTRIBUTE.md](https://github.com/Nerym492/TodoList/blob/main/CONTRIBUTE.md) file at the root of the project.
