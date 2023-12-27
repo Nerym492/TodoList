@@ -1,6 +1,8 @@
 ToDoList
 ========
 
+[![SymfonyInsight](https://insight.symfony.com/projects/78677a1a-468e-4f38-8bc6-d6d847c50ec2/small.svg)](https://insight.symfony.com/projects/78677a1a-468e-4f38-8bc6-d6d847c50ec2)
+
 Project basis #8: Improve an existing project
 
 https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
